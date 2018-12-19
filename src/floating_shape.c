@@ -112,7 +112,7 @@ float_shape_t *make_shape_from_pixbuf(GdkPixbuf *pixbuf)
    gtk_window_set_keep_above(GTK_WINDOW(s->window), TRUE);
    
    s->image = gtk_image_new_from_pixbuf(pixbuf);
-   gtk_container_add(GTK_CONTAINER(s->window), s->image);
+   gtk_container_add(GTK_CONTAINER(s->window), s->image);//将imge加入到window中
 
    get_alpha_mask(s);
    gtk_widget_shape_combine_mask(s->window, s->mask_bitmap, 0, 0);

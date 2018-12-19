@@ -80,14 +80,17 @@ static cowstate_t next_state(cowstate_t state)
    }
 }
 
+//加载cow图像
 static GdkPixbuf *load_cow()
 {
    char *cow_path;
    const char *alt_image = get_string_option("alt_image");
 
+   //如果选项指定了，就用选项指定的
    if (*alt_image)
       cow_path = strdup(alt_image);
    else
+	  //否则使用默认的图片
       asprintf(&cow_path, "%s/%s_%s.png", DATADIR,
          get_string_option("image_base"),
          get_string_option("cow_size"));
@@ -269,6 +272,7 @@ void display_cow(bool debug, const char *text, bool run_main, cowmode_t mode)
       exit(1);
    }
 
+   //加载bubble
    xcowsay.bubble = make_shape_from_pixbuf(xcowsay.bubble_pixbuf);
 
    int total_width = shape_width(xcowsay.cow)
@@ -333,6 +337,7 @@ void display_cow(bool debug, const char *text, bool run_main, cowmode_t mode)
 
    close_when_clicked(xcowsay.cow);
 
+   //进入到事件循环
    if (run_main)
       gtk_main();
 
