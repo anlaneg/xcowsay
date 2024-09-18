@@ -58,6 +58,7 @@ typedef struct {
    cowstate_t state;
    int transition_timeout;
    int display_time;
+   /*当前待显示的屏幕宽和高*/
    int screen_width, screen_height;
 } xcowsay_t;
 
@@ -160,6 +161,7 @@ static gboolean tick(gpointer data)
 
 void cowsay_init(int *argc, char ***argv)
 {
+    /*gtk初始化*/
    gtk_init(argc, argv);
 
    xcowsay.cow = NULL;
@@ -242,14 +244,18 @@ static void dream_setup(const char *file, bool debug)
 
 void display_cow(bool debug, const char *text, bool run_main, cowmode_t mode)
 {
+    /*取默认的screnn*/
    GdkScreen *screen = gdk_screen_get_default();
 
+   /*取此screnn有多少个monitor*/
    gint n_monitors = gdk_screen_get_n_monitors(screen);
 
    gint pick = get_int_option("monitor");
    if (pick < 0 || pick >= n_monitors)
+       /*随机选择一个monitor*/
       pick = random() % n_monitors;
 
+   /*取此monitor对应的rectangle*/
    GdkRectangle geom;
    gdk_screen_get_monitor_geometry(screen, pick, &geom);
 

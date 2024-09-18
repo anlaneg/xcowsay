@@ -35,8 +35,11 @@ typedef union {
 } option_value_t;
 
 typedef struct {
+    /*选项类型*/
    option_type_t type;
+   /*选项取值*/
    option_value_t u;
+   /*选项名称*/
    const char *name;
 } option_t;
 
@@ -47,6 +50,7 @@ typedef struct _option_list_t {
 
 static option_list_t *options = NULL;
 
+/*申请option节点*/
 static option_list_t *alloc_node()
 {
    option_list_t *node = (option_list_t*)malloc(sizeof(option_list_t));
@@ -55,6 +59,7 @@ static option_list_t *alloc_node()
    return node;
 }
 
+/*取指定名称的选项*/
 static option_t *get_option(const char *name)
 {
    option_list_t *it;
@@ -66,7 +71,7 @@ static option_t *get_option(const char *name)
    exit(EXIT_FAILURE);
 }
 
-
+/*选项必须为string类型*/
 static void assert_string(const option_t *opt)
 {
    if (optString != opt->type) {
@@ -75,6 +80,7 @@ static void assert_string(const option_t *opt)
    }
 }
 
+/*选项必须为int类型*/
 static void assert_int(const option_t *opt)
 {
    if (optInt != opt->type) {
@@ -83,6 +89,7 @@ static void assert_int(const option_t *opt)
    }
 }
 
+/*选项必须为bool类型*/
 static void assert_bool(const option_t *opt)
 {
    if (optBool != opt->type) {
@@ -91,6 +98,7 @@ static void assert_bool(const option_t *opt)
    }
 }
 
+/*获取int型选项name对应的值*/
 int get_int_option(const char *name)
 {
    option_t *opt = get_option(name);
@@ -98,6 +106,7 @@ int get_int_option(const char *name)
    return opt->u.ival;
 }
 
+/*获取bool型选项name对应的值*/
 bool get_bool_option(const char *name)
 {
    option_t *opt = get_option(name);
@@ -105,6 +114,7 @@ bool get_bool_option(const char *name)
    return opt->u.bval;
 }
 
+/*获取string型选项name对应的值*/
 const char *get_string_option(const char *name)
 {
    option_t *opt = get_option(name);
@@ -112,6 +122,7 @@ const char *get_string_option(const char *name)
    return opt->u.sval;
 }
 
+/*在options链表头部添加一个option_t对象*/
 static void add_option(const char *name, option_type_t type, option_value_t def)
 {
    option_t opt = { type, def, name };
@@ -121,6 +132,7 @@ static void add_option(const char *name, option_type_t type, option_value_t def)
    options = node;
 }
 
+/*添加int型选项name，并设置其对应的值*/
 void add_int_option(const char *name, int ival)
 {
    option_value_t u;
@@ -128,6 +140,7 @@ void add_int_option(const char *name, int ival)
    add_option(name, optInt, u);
 }
 
+/*添加bool型选项name，并设置其对应的值*/
 void add_bool_option(const char *name, bool bval)
 {
    option_value_t u;
@@ -135,6 +148,7 @@ void add_bool_option(const char *name, bool bval)
    add_option(name, optBool, u);
 }
 
+/*添加string型选项name，并设置其对应的值*/
 void add_string_option(const char *name, const char *sval)
 {
    option_value_t u;
@@ -142,6 +156,7 @@ void add_string_option(const char *name, const char *sval)
    add_option(name, optString, u);
 }
 
+/*设置int型选项name对应的值*/
 void set_int_option(const char *name, int ival)
 {
    option_t *opt = get_option(name);
@@ -149,6 +164,7 @@ void set_int_option(const char *name, int ival)
    opt->u.ival = ival;
 }
 
+/*设置bool型选项name对应的值*/
 void set_bool_option(const char *name, bool bval)
 {
    option_t *opt = get_option(name);
@@ -156,6 +172,7 @@ void set_bool_option(const char *name, bool bval)
    opt->u.bval = bval;
 }
 
+/*设置string型选项name对应的值*/
 void set_string_option(const char *name, const char *sval)
 {
    option_t *opt = get_option(name);

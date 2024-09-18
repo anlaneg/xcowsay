@@ -170,6 +170,7 @@ static char *config_file_name(void)
    // We prefer them in the above order
    // Need to free the result of this function
 
+    /*如果设置了此配置文件，则返回*/
    const char *alt_config_file = get_string_option("alt_config_file");
    if (*alt_config_file)
       return strdup(alt_config_file); // We always free the result
@@ -191,6 +192,7 @@ static char *config_file_name(void)
 
    struct stat dummy;
    if (stat(fname, &dummy) == 0)
+       /*文件存在，返回名称*/
       return fname;
 
    free(fname);
@@ -200,6 +202,7 @@ static char *config_file_name(void)
       return NULL;
 
    if (stat(fname, &dummy) == 0)
+       /*文件存在，返回名称*/
       return fname;
 
    free(fname);
@@ -208,10 +211,12 @@ static char *config_file_name(void)
 
 void parse_config_file(void)
 {
+    /*取可能的配置文件路径*/
    char *fname = config_file_name();
    if (fname == NULL)
       return;
 
+   /*打开此文件*/
    FILE *frc = fopen(fname, "r");
    free(fname);
 
@@ -224,6 +229,7 @@ void parse_config_file(void)
    strbuf_t *dummy_buf = make_str_buf(0);
 
    jmp_buf escape;
+   /*向长跳致敬，通过长跳在解析配置直接返回*/
    if (setjmp(escape) == 0) {
       token_t tok;
       int lineno = 1;

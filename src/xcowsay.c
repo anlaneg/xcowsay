@@ -233,6 +233,7 @@ int main(int argc, char **argv)
    bindtextdomain(PACKAGE, LOCALEDIR);
    textdomain(PACKAGE);
 
+   /*添加选项，并设置其对应的默认值*/
    add_int_option("lead_in_time", DEF_LEAD_IN_TIME);
    add_int_option("display_time", DEF_DISPLAY_TIME);
    add_int_option("lead_out_time", get_int_option("lead_in_time"));
@@ -254,8 +255,10 @@ int main(int argc, char **argv)
    add_bool_option("left", false);
    add_string_option("close_event", "button-press-event");
 
+   /*解析配置文件，更新配置*/
    parse_config_file();
 
+   /*解析参数，更新配置*/
    int c, index = 0, failure = 0;
    const char *spec = "hvld:r:t:f:";
    const char *dream_file = NULL;
@@ -331,10 +334,12 @@ int main(int argc, char **argv)
    if (failure)
       exit(EXIT_FAILURE);
 
+   /*随机数种子*/
    struct timeval tv;
    gettimeofday(&tv, NULL);
    srandom(tv.tv_sec ^ tv.tv_usec ^ getpid());
 
+   /*采用何模式显示*/
    cowmode_t mode = think_flag ? COWMODE_THINK : COWMODE_NORMAL;
 
    if (daemon_flag) {
@@ -356,6 +361,7 @@ int main(int argc, char **argv)
             exit(EXIT_FAILURE);
          }
 
+         /*通过-d参数指针了dream file*/
          display_cow_or_invoke_daemon(debug, abs_path, COWMODE_DREAM);
          free(abs_path);
       }

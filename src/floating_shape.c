@@ -30,6 +30,7 @@ static float_shape_t *alloc_shape()
    return s;
 }
 
+/*窗口退出回调函数*/
 static void quit_callback(GtkWidget *widget, gpointer data)
 {
    gtk_main_quit();
@@ -112,7 +113,8 @@ float_shape_t *make_shape_from_pixbuf(GdkPixbuf *pixbuf)
    gtk_window_set_keep_above(GTK_WINDOW(s->window), TRUE);
    
    s->image = gtk_image_new_from_pixbuf(pixbuf);
-   gtk_container_add(GTK_CONTAINER(s->window), s->image);//将imge加入到window中
+   //将imge加入到window中
+   gtk_container_add(GTK_CONTAINER(s->window), s->image);
 
    get_alpha_mask(s);
    gtk_widget_shape_combine_mask(s->window, s->mask_bitmap, 0, 0);
@@ -137,8 +139,10 @@ void hide_shape(float_shape_t *shape)
    gtk_widget_hide(shape->window);
 }
 
+
 void move_shape(float_shape_t *shape, int x, int y)
 {
+    /*将窗口移动到指定位置*/
    shape->x = x;
    shape->y = y;
    gtk_window_move(GTK_WINDOW(shape->window), shape->x, shape->y);
